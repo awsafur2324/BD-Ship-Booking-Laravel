@@ -23,6 +23,10 @@ return new class extends Migration
             $table->string('gender');
             $table->string('password', 100);
             $table->string('email_verified',10);
+            $table->string('manager_verified',10);
+            $table->enum('manager_status', ['active', 'ban']);
+            $table->string('city');
+            $table->string('country');
             $table->string('otp',10);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

@@ -11,10 +11,10 @@
     <link href="{{ asset('css/fontawesome.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/toastify.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/tailwind.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/swiper-bundle.min.css') }}" rel="stylesheet" />
 
     {{-- script --}}
+    <script src="{{ asset('js/tailwind.min.v3.js') }}"></script>
     <script src="{{ asset('js/toastify-js.js') }}"></script>
     <script src="{{ asset('js/axios.min.js') }}"></script>
     <script src="{{ asset('js/config.js') }}"></script>
@@ -34,16 +34,29 @@
                 <div class="indeterminate"></div>
             </div>
         </div>
-        {{-- Nav Bar --}}
 
-        @yield('content')
-
-        {{-- footer --}}
-
+        <div class="">
+            {{-- top Nav --}}
+            <div class="w-full h-14 bg-gray-200 shadow fixed z-50 top-0">
+                @include('components.dashboard.dashboard-topNav')
+            </div>
+            <div class="flex flex-row justify-end items-start w-full h-screen mt-14 transition-all duration-200 ease-in-out">
+                {{-- side Nav --}}
+                <div id="side-nav"
+                    class="w-full max-w-[250px] shadow-lg h-full overflow-y-auto fixed top-14 -left-[300px] md:left-0 z-40 bg-white transition-all duration-300 ease-in-out">
+                    @include('components.dashboard.dashboard-nav')
+                </div>
+                {{-- main content --}}
+                <div id="main-content" class="relative  w-full md:max-w-[calc(100%-250px)] overflow-y-auto overflow-x-hidden p-2 transition-all duration-300 ease-in-out">
+                    @yield('content')
+                </div>
+            </div>
+        </div>
     </div>
     {{-- #body-container --}}
 
     <script>
+        //-------Preloader-------
         $(document).ready(function() {
             // Initially, make the body container hidden
             // $('#body-container').addClass('hidden');
@@ -53,10 +66,26 @@
                 // Fade out preloader and show body container
                 $('#preloader').fadeOut('slow', function() {
                     $('#body-container').removeClass('hidden').css('display',
-                    'block'); // Show content
+                        'block'); // Show content
                 });
             }, 2000);
         });
+
+        //-------Side Nav Action------
+        $('#burger').click(function() {
+            $('#side-nav').removeClass('-left-[300px]');
+            $('#side-nav').addClass('left-0');
+            $('#main-content').addClass('max-w-[calc(100%-250px)]');
+            $('#burger').toggleClass('hidden');
+            $('#cross').toggleClass('hidden');
+        })
+        $('#cross').click(function() {
+            $('#side-nav').removeClass('left-0');
+            $('#side-nav').addClass('-left-[300px]');
+            $('#main-content').removeClass('max-w-[calc(100%-250px)]');
+            $('#burger').toggleClass('hidden');
+            $('#cross').toggleClass('hidden');
+        })
     </script>
 </body>
 

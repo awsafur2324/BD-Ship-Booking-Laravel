@@ -1,3 +1,4 @@
-<div>
-    <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
-</div>
+@extends('layouts.dashboard_layout')
+@section('content')
+   @include('components.dashboard.profile-form')
+@endsection

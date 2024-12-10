@@ -20,15 +20,26 @@ class User extends Model
         'gender',
         'email_verified',
         'role',
+        'manager_verified',
+        'manager_status',
+        'city',
+        'country',
         'otp',
     ];
     protected $attributes = [
-        'otp' => '0' ,
+        'otp' => '0',
         'image_Url' => '',
         'delete_id' => '',
         'email_verified' => '',
         'gender' => '',
         'address' => '',
+        'manager_verified' => '',
+        'manager_status' => 'active',
+        'city' => '',
+        'country' => '',
     ];
 
+    public function shipDetails(){
+        return $this->hasMany(ShipDetail::class);
+    }
 }

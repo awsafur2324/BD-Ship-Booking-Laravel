@@ -11,10 +11,10 @@
     <link href="{{ asset('css/fontawesome.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/toastify.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/tailwind.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/swiper-bundle.min.css') }}" rel="stylesheet" />
 
     {{-- script --}}
+    <script src="{{ asset('js/tailwind.min.v3.js') }}"></script>
     <script src="{{ asset('js/toastify-js.js') }}"></script>
     <script src="{{ asset('js/axios.min.js') }}"></script>
     <script src="{{ asset('js/config.js') }}"></script>

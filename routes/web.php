@@ -41,3 +41,7 @@ Route::view('/resetPassword', 'pages.auth.resetPass-page');
 
 //-------- App Pages ----------//
 Route::view('/', 'pages.app.home-page');
+
+// -------- Dashboard routes ----------//
+Route::view('/profile', 'pages.dashboard.profile-page');
+Route::view('/assign-ship', 'pages.dashboard.assignShip-page');
