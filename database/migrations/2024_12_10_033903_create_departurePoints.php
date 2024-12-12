@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departurePoints', function (Blueprint $table) {
+        Schema::create('departure_points', function (Blueprint $table) {
             $table->id();
-            $table->string('departure_form', 50);
+            $table->string('departure_point', 50);
             $table->string('departure_time', 50);
             $table->timestamp('departure_date');
             $table->unsignedBigInteger('shipDetails_id');
 
-            $table->foreign('shipDetails_id')->references('id')->on('shipDetails')
+            $table->foreign('shipDetails_id')->references('id')->on('ship_details')
             ->cascadeOnUpdate()->restrictOnDelete();
 
             $table->timestamp('created_at')->useCurrent();

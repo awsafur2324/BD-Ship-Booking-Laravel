@@ -16,10 +16,10 @@
         </div>
         <div class="w-full px-3 sm:w-1/2">
             <div class="mb-5">
-                <label for="seat_amount" class="mb-3 block text-base font-semibold text-[#07074D]">
-                    Amount of Seats
+                <label for="seat_tag" class="mb-3 block text-base font-semibold text-[#07074D]">
+                    Seat Tag Code(e.g. Eco)
                 </label>
-                <input type="number" name="seat_amount" id="seat_amount" placeholder="Enter your email"
+                <input type="text" name="seat_tag" id="seat_tag" placeholder="Enter seat tag code"
                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#000000] outline-none focus:border-[#6A64F1] focus:shadow-md" />
             </div>
         </div>
@@ -42,16 +42,7 @@
                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#000000] outline-none focus:border-[#6A64F1] focus:shadow-md" />
             </div>
         </div>
-        <div class="w-full px-3 sm:w-1/2">
-            <div class="mb-5">
-                <label for="seat_tag" class="mb-3 block text-base font-semibold text-[#07074D]">
-                    Seat Tag Code
-                </label>
-                <input type="number" name="seat_tag" id="seat_tag" placeholder="Enter seat tag code"
-                    class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#000000] outline-none focus:border-[#6A64F1] focus:shadow-md" />
-            </div>
-        </div>
-        <div class="w-full px-3 sm:w-1/2">
+        <div class="w-full px-3">
             <div class="mb-5">
                 <label for="seat_price" class="mb-3 block text-base font-semibold text-[#07074D]">
                     Set Seat Price
@@ -72,12 +63,12 @@
         Add Another Category +</span>
 </button>
 
-<button id="map-submit">Submit</button>
 <script>
     $(document).ready(function() {
         let seatsCount = 1;
         const seatMap = $('#seat-map');
-        $('#add-another-seat-btn').on('click', function() {
+        $('#add-another-seat-btn').on('click', function(e) {
+            e.preventDefault();
             seatsCount++;
             $('#seat-map-hr').removeClass('hidden');
             // Clone the original element
@@ -85,59 +76,17 @@
             newSeat.find('input').val(''); // Reset the input values
 
             // Add a separator
-            const addSeat = $(`
-            <div id="seat-map-hr">
+            const addSeat = $(
+                `  <div id="seat-map-hr">
                 <p class="text-center w-full text-sm text-[#07074D]">Seat Map for Category ${seatsCount}</p>
                 <hr class="my-2 border-b-[1px] border-[#e0e0e0] w-1/2 mx-auto" />
-            </div>
-        `);
+            </div>`
+            );
 
             // Append the separator and cloned element to the parent
             seatMap.parent().append(addSeat).append(newSeat);
         })
 
-        $('#map-submit').on('click', function(e) {
-            e.preventDefault();
-            const formData = [];
-            // Iterate through each refund-policy section
-            $('.seat-map-class').each(function() {
-                const seat_category = $(this).find('input[name="seat_category"]').val();
-                const seat_amount = $(this).find('input[name="seat_amount"]').val();
-                const seat_row = $(this).find('input[name="seat_row"]').val();
-                const seat_column = $(this).find('input[name="seat_column"]').val();
-                const seat_tag = $(this).find('input[name="seat_tag"]').val();
-                const seat_price = $(this).find('input[name="seat_price"]').val();
-
-                formData.push({
-                    seat_category,
-                    seat_amount,
-                    seat_row,
-                    seat_column,
-                    seat_tag,
-                    seat_price
-                });
-            });
-
-            function hasDuplicateValue(array) {
-                const seats = new Set();
-                for (const item of array) {
-                    if (seats.has(item.seat_category)) {
-                        return true; // Duplicate found
-                    }
-                    seats.add(item.seat_category);
-                }
-                return false; // No duplicates
-            }
-            if (hasDuplicateValue(formData)) {
-                errorToast("Please select different refund policies for each ship");
-            } else {
-                // Log the collected data (or send to the backend)
-                console.log(formData);
-            }
-            // Example AJAX submission
-            // $.post('/your-endpoint', { data: formData }, function(response) {
-            //     console.log(response);
-            // });
-        });
+      
     });
 </script>

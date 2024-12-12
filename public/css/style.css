@@ -89,3 +89,41 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
+
+
+.seat {
+    padding: 8px 22px;
+    border-radius: 12px;
+    color: #0307127f;
+    background-color: #03071219;
+    font-size: 14px;
+    font-family: Inter;
+    text-align: center;
+    margin: 12px 0px;
+}
+
+.seat:hover {
+    cursor: pointer;
+    color: white;
+    background-color: #1DD100;
+    border: 1px solid #1DD100;
+    transform: scale(1.15);
+    transition: transform 200ms ease-in-out;
+}
+
+.activeSeat {
+    color: white;
+    background-color: #1DD100;
+    border: 1px solid #1DD100;
+    transform: scale(1.15);
+}
+
+
+@media only screen and (max-width: 767px) {
+
+    .right-boder {
+        border-right: 0;
+        border-bottom: 1px dashed rgba(3, 7, 18, 0.30);
+    }
+}

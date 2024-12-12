@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class ShipDetail extends Model
 {
     use HasFactory;
+    protected $table = 'ship_details'; 
     protected $fillable = [
         'ship_name',
         'couch_no',
+        'ship_register_no',
         'ship_manager_name',
         'ship_manager_number',
         'user_id',

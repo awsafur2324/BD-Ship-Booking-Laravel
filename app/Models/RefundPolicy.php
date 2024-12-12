@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class RefundPolicy extends Model
 {
     use HasFactory;
-    protected $fillable = ['refund_category', 'refund_hour', 'shipDetails_id'];
+
+    protected $table ='refund_policies';
+    protected $fillable = ['refund_category', 'refund_time', 'shipDetails_id'];
 
     public function shipDetails()
     {

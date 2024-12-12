@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class DeparturePoint extends Model
 {
     use HasFactory;
+    protected $table = 'departure_points';
     protected $fillable = [
-        'departure_form',
+        'departure_point',
         'departure_time',
         'departure_date',
         'shipDetails_id'

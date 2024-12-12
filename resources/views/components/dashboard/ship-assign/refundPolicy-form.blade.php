@@ -15,11 +15,11 @@
         </div>
         <div class="w-full px-3 sm:w-1/2">
             <div class="mb-5">
-                <label for="refund_hour" class="mb-3 block text-base font-semibold text-[#07074D]">
-                    Enter The Hours
+                <label for="refund_time" class="mb-3 block text-base font-semibold text-[#07074D]">
+                    Enter Refund Days
                     <span class="text-xs text-[#6A64F1]">(Before the ship Departure time)</span>
                 </label>
-                <input type="number" name="refund_hour" id="refund_hour" placeholder="Enter the hours" required
+                <input type="number" name="refund_time" id="refund_time" placeholder="Enter the number of days(e.g. 2)" required
                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#000000] outline-none focus:border-[#6A64F1] focus:shadow-md" />
             </div>
         </div>
@@ -35,57 +35,56 @@
         Add Another Refund Policy +</span>
 </button>
 
-<button id="submit" type="submit">Submit</button>
+{{-- <button id="submit" type="submit">Submit</button> --}}
 
 <script>
-  let refundCount = 1; // Tracks the number of refund sections
-const refundPolicy = $('#refund-policy');
+    let refundCount = 1; // Tracks the number of refund sections
+    const refundPolicy = $('#refund-policy');
 
-$('#add-refund-policy').on('click', function () {
-    if (refundCount < 3) {
-        const newRefund = refundPolicy.clone(); // Clone the refund section
+    $('#add-refund-policy').on('click', function(e) {
+        e.preventDefault();
+        if (refundCount < 3) {
+            const newRefund = refundPolicy.clone(); // Clone the refund section
 
-        // Update IDs and reset input/select values
-        newRefund.find('select[name="refund_category"]').attr('id', `refund_category_${refundCount}`).val('');
-        newRefund.find('input[name="refund_hour"]').attr('id', `refund_hour_${refundCount}`).val('');
+            // Update IDs and reset input/select values
+            newRefund.find('select[name="refund_category"]').attr('id', `refund_category_${refundCount}`).val(
+                '');
+            newRefund.find('input[name="refund_time"]').attr('id', `refund_time_${refundCount}`).val('');
 
-        // Update the cloned section's class for easier identification
-        newRefund.removeAttr('id').addClass(`refund-policy-${refundCount}`);
+            // Update the cloned section's class for easier identification
+            newRefund.removeAttr('id').addClass(`refund-policy-${refundCount}`);
 
-        refundPolicy.parent().append(newRefund); // Append the cloned section
-        refundCount++;
-    } else {
-        errorToast("Refund policy limit reached");
-    }
-});
-
-$('#submit').on('click', function (e) {
-    e.preventDefault(); // Prevent default form submission
-
-    const formData = [];
-    let hasDuplicates = false;
-
-    // Iterate through each refund-policy section
-    $('.refund-policy-class').each(function () {
-        const refund_category = $(this).find('select[name="refund_category"]').val();
-        const refund_hour = $(this).find('input[name="refund_hour"]').val();
-
-        if (formData.some(data => data.refund_category === refund_category)) {
-            hasDuplicates = true; // Duplicate refund policy detected
+            refundPolicy.parent().append(newRefund); // Append the cloned section
+            refundCount++;
+        } else {
+            errorToast("Refund policy limit reached");
         }
-
-        formData.push({
-            refund_category: refund_category,
-            refund_hour: refund_hour,
-        });
     });
 
-    if (hasDuplicates) {
-        errorToast("Please select different refund policies for each ship");
-    } else {
-        // Log the collected data (or send to the backend)
-        console.log(formData);
-    }
-});
+    function getRefundPolicyData() {
+        const formData = [];
+        let hasDuplicates = false;
 
+        // Iterate through each refund-policy section
+        $('.refund-policy-class').each(function() {
+            const refund_category = $(this).find('select[name="refund_category"]').val();
+            const refund_time = $(this).find('input[name="refund_time"]').val();
+
+            if (formData.some(data => data.refund_category === refund_category || data.refund_time ===
+                    refund_time)) {
+                hasDuplicates = true; // Duplicate refund policy detected
+            }
+
+            formData.push({
+                refund_category: refund_category,
+                refund_time: refund_time,
+            });
+        });
+
+        if (hasDuplicates) {
+            errorToast("There are duplicate refund policies. Please change one.");
+        } else {
+            return formData;
+        }
+    };
 </script>

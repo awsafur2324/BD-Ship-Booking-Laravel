@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shipDetails', function (Blueprint $table) {
+        Schema::create('ship_details', function (Blueprint $table) {
             $table->id();
             $table->string('ship_name' , 50);
-            $table->string('couch_no', 50)->unique();
+            $table->string('couch_no', 50);
+            $table->string('ship_register_no', 50)->unique();
             $table->string('ship_manager_name', 50);
             $table->string('ship_manager_number',20);
             $table->unsignedBigInteger('user_id');

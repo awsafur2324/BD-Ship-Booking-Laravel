@@ -77,7 +77,6 @@
         Another Arrival Point +</span>
 </button>
 
-<button id="ship-submit" type="submit">Submit</button>
 
 <script>
     $(document).ready(function() {
@@ -94,7 +93,8 @@
 
         // Add another route functionality
         const shipArrival = $('#add-another-route'); // Original element to clone
-        $('#add-another-arrival-point').on('click', function() {
+        $('#add-another-arrival-point').on('click', function(e) {
+            e.preventDefault();
             data++; // Increment route counter
             $('#add-route-hr').removeClass('hidden');
             // Clone the original element
@@ -114,50 +114,5 @@
             shipArrival.parent().append(addRouteHr).append(newRefund);
         });
 
-        // submit form
-        $('#ship-submit').on('click', function(e) {
-            e.preventDefault();
-            const formData = [];
-            formData.push({
-                departure_from: $('#departure_from').val(),
-                departure_date: $('#departure_date').val(),
-                departure_time: $('#departure_time').val(),
-            });
-
-            // Iterate through each refund-policy section
-            $('.add-route-class').each(function() {
-                const arrival_at = $(this).find('input[name="arrival_at"]').val();
-                const arrival_date = $(this).find('input[name="arrival_date"]').val();
-                const arrival_time = $(this).find('input[name="arrival_time"]').val();
-
-                formData.push({
-                    arrival_at,
-                    arrival_date,
-                    arrival_time,
-                });
-            });
-
-            function hasDuplicateValue(array) {
-                const arrival = new Set();
-                for (const item of array) {
-                    if (arrival.has(item.arrival_at) || formData[0].departure_from === item
-                        .arrival_at) {
-                        return true; // Duplicate found
-                    }
-                    arrival.add(item.arrival_at);
-                }
-                return false; // No duplicates
-            }
-            if (hasDuplicateValue(formData)) {
-                errorToast("Please select different arrival points for each ship");
-            } else {
-                // Log the collected data (or send to the backend)
-                console.log(formData);
-            }
-            // Example AJAX submission
-            // $.post('/your-endpoint', { data: formData }, function(response) {
-            //     console.log(response);
-            // });
-        });
     });
 </script>

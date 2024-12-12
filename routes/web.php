@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\auth\profileController;
 use App\Http\Controllers\auth\userController;
+use App\Http\Controllers\shipAssignController;
 use App\Http\Middleware\ForgetPassToken_middleware;
 use App\Http\Middleware\verifyToken;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ Route::middleware([verifyToken::class])->group(function () {
     Route::get('api/deleteProfile', [profileController::class, 'deleteProfile']);
 });
 
+Route::post('api/assignShip', [shipAssignController::class, 'assignShip']);
 
 //----------------------------------------------------------------------------------
 // Web routes
@@ -41,7 +43,8 @@ Route::view('/resetPassword', 'pages.auth.resetPass-page');
 
 //-------- App Pages ----------//
 Route::view('/', 'pages.app.home-page');
+Route::view('/view-ship', 'pages.app.view-ship-page');
 
 // -------- Dashboard routes ----------//
 Route::view('/profile', 'pages.dashboard.profile-page');
-Route::view('/assign-ship', 'pages.dashboard.assignShip-page');
+Route::view('/dashboard/ship-assign', 'pages.dashboard.assignShip-page');

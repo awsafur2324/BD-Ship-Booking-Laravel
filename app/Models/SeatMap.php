@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class SeatMap extends Model
 {
     use HasFactory;
-    protected $fillable = ['category', 'amount_of_seats', 'seat_in_rows', 'amount_of_columns', 'amount_of_seats', 'seat_price', 'seat_tag', 'departurePoints_id', 'shipDetails_id'];
+    protected $table ='seat_maps';
+    protected $fillable = ['category', 'seat_in_rows', 'seat_in_columns', 'amount_of_seats', 'seat_price', 'seat_tag', 'departurePoints_id', 'shipDetails_id'];
     public function departurePoint()
     {
         return $this->belongsTo(DeparturePoint::class);

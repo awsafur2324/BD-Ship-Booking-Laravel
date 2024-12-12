@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ArrivalPoint extends Model
 {
     use HasFactory;
+    protected $table = 'arrival_points';
     protected $fillable = ['arrival_point', 'arrival_time', 'arrival_date', 'departurePoints_id', 'shipDetails_id'];
 
     public function departurePoint()

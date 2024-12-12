@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('refundPolicies', function (Blueprint $table) {
+        Schema::create('refund_policies', function (Blueprint $table) {
             $table->id();
             $table->string('refund_category');
-            $table->string('refund_hour');
+            $table->string('refund_time');
             $table->unsignedBigInteger('shipDetails_id');
             
-            $table->foreign('shipDetails_id')->references('id')->on('shipDetails')
+            $table->foreign('shipDetails_id')->references('id')->on('ship_details')
                 ->cascadeOnUpdate()->restrictOnDelete();
 
             $table->timestamp('created_at')->useCurrent();
