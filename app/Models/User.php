@@ -39,7 +39,13 @@ class User extends Model
         'country' => '',
     ];
 
-    public function shipDetails(){
+    public function shipDetails()
+    {
         return $this->hasMany(ShipDetail::class);
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class userController extends Controller
@@ -21,7 +22,7 @@ class userController extends Controller
             $email = $request->email;
             $user = User::where('email', $email)->first();
             if ($user && $user->email_verified === 'true') {
-                return response()->json(['status' => false, 'message' => 'Email already exists'], 500);
+                return response()->json(['status' => false, 'message' => 'Email already exists']);
             } else {
                 if ($user) {
                     // delete user from database if email already exists
@@ -49,15 +50,15 @@ class userController extends Controller
                 if ($status == true) {
                     //TODO :: Redirect to OTP Input page
 
-                    return response()->json(['status' => true,  'message' => 'Please Check Your Email.'], 200);
+                    return response()->json(['status' => 'success',  'message' => 'Please Check Your Email.'], 200);
                 } else {
                     // delete user from database if email sent failed
                     User::where('email', $email)->delete();
-                    return response()->json(['status' => false, 'message' => 'Registration failed'], 500);
+                    return response()->json(['status' => false, 'message' => 'Registration failed']);
                 }
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'message' => 'Registration failed'], 500);
+            return response()->json(['status' => false, 'message' => 'Registration failed']);
         }
     }
 
@@ -92,46 +93,44 @@ class userController extends Controller
                 User::where('email', $email)->delete();
                 // TODO :: Redirect to Register page with error message
 
-                return response()->json(['status' => false, 'message' => 'Registration failed'], 500);
+                return response()->json(['status' => false, 'message' => 'Registration failed']);
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'message' => 'Registration failed'], 500);
+            return response()->json(['status' => false, 'message' => 'Registration failed']);
         }
     }
 
     // Log in 
     public function login(Request $request)
     {
+        $email = $request->email;
+        $password = $request->password;
         try {
-            $email = $request->email;
             $user = User::where('email', $email)->first();
-            if ($user && $user->email_verified === 'true') {
-                if (Hash::check($request->password, $user->password)) {
-                    //Generate token
-                    $token = JWT_token::CreateToken($user->email, $user->id);
-
-                    // set user role into session so that use it in anywhere.
-                    $request->session()->put('user_role', $user->role);
-                    $request->session()->put('user_name', $user->name);
-
-                    // Redirect to current page
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => 'Login successful',
-                    ], 200)->cookie('token', $token, time() + 60 * 60 * 24 * 30); // 30 days for client site
-                } else {
-                    return response()->json(['status' => false, 'message' => 'Invalid password'], 500);
-                }
-            } else {
-                // delete user from database if email not verified
-                User::where('email', $email)->delete();
-                return response()->json(['status' => false, 'message' => 'Invalid email or email not verified . Register again'], 500);
+            if (!$user) {
+                return response()->json(['status' => 'error', 'message' => 'Email not found']);
             }
+
+            if ($user->email_verified !== 'true') {
+                User::where('email', $email)->delete();
+                return response()->json(['status' => 'error', 'message' => 'Email not verified']);
+            }
+
+            if (!Hash::check($password, $user->password)) {
+                return response()->json(['status' => 'error', 'message' => 'Invalid password']);
+            }
+
+            $token = JWT_token::CreateToken($user->email, $user->id);
+
+            $request->session()->put('user_role', $user->role);
+            $request->session()->put('user_name', $user->name);
+
+            return response()->json(['status' => 'success', 'message' => 'Login successful'], 200)
+                ->cookie('token', $token, time() + 60 * 60 * 24 * 30);
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'message' => 'Login failed'], 500);
+            return response()->json(['status' => 'error', 'message' => 'Login failed']);
         }
     }
-
     // Forgot Password send OTP
     public function forgotPassword_sendOtp(Request $request)
     {
@@ -148,15 +147,15 @@ class userController extends Controller
                     // set token for otp verification
                     $token = JWT_token::ForgetPasswordToken($user->email);
 
-                    return response()->json(['status' => true,  'message' => 'OTP sent successfully.'], 200)->cookie('forgot_password_token', $token, time() + 60 * 20); // 20 minutes for otp verification
+                    return response()->json(['status' => 'success',  'message' => 'OTP sent successfully.'], 200)->cookie('forgot_password_token', $token, time() + 60 * 20); // 20 minutes for otp verification
                 } else {
-                    return response()->json(['status' => false, 'message' => 'OTP sent failed.'], 500);
+                    return response()->json(['status' => 'error', 'message' => 'OTP sent failed.']);
                 }
             } else {
-                return response()->json(['status' => false, 'message' => 'Invalid email'], 500);
+                return response()->json(['status' => 'error', 'message' => 'Email not found.']);
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'message' => 'Try again later.Something went wrong'], 500);
+            return response()->json(['status' => 'error', 'message' => 'Try again later.Something went wrong']);
         }
     }
 
@@ -171,15 +170,15 @@ class userController extends Controller
                 //update the otp to 0
                 User::where('email', '=', $email)->update(['otp' => 0]);
 
-                return response()->json(['status' => true,  'message' => 'OTP verified.'], 200);
+                return response()->json(['status' => 'success',  'message' => 'OTP verified.']);
 
                 //ToDO : redirect to reset password page (frontend)
 
             } else {
-                return response()->json(['status' => false, 'message' => 'Invalid OTP'], 500);
+                return response()->json(['status' => false, 'message' => 'Invalid OTP']);
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'message' => 'Try again later.Something went wrong'], 500);
+            return response()->json(['status' => false, 'message' => 'Try again later.Something went wrong']);
         }
     }
 
@@ -190,10 +189,9 @@ class userController extends Controller
             $newPassword = Hash::make($request->new_password);
             $email = $request->header('email');
             User::Where('email', $email)->update(['password' => $newPassword]);
-            // TODO :: Redirect to login page with success message
-            return response()->json(['status' => true,  'message' => 'Password reset successful.'], 200)->cookie('forgot_password_token', '', -1);
+            return response()->json(['status' => 'success',  'message' => 'Password reset successful.'], 200)->cookie('forgot_password_token', '', -1);
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'message' => 'Try again later.Something went wrong'], 500);
+            return response()->json(['status' => false, 'message' => 'Try again later.Something went wrong']);
         }
     }
 

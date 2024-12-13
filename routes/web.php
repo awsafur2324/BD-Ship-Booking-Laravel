@@ -12,13 +12,13 @@ use Illuminate\Support\Facades\Route;
 //----------------------------------------------------------------------------------
 
 //-------- Auth API routes ----------//
-Route::post('api/register', [userController::class, 'register']);
-Route::post('api/verifyOtp', [userController::class, 'Email_verifyOtp']); //registration verification
-Route::post('api/login', [userController::class, 'login']);
-Route::post('api/forgotPassword', [userController::class, 'forgotPassword_sendOtp']);
-Route::post('api/forgotPasswordOtp', [userController::class, 'forgotPassword_verifyOtp'])->middleware([ForgetPassToken_middleware::class]);
-Route::post('api/resetPassword', [userController::class, 'resetPassword'])->middleware([ForgetPassToken_middleware::class]);
-Route::get('api/logout', [userController::class, 'UserLogout']);
+Route::post('/api/register', [userController::class, 'register']);
+Route::post('/api/verifyOtp', [userController::class, 'Email_verifyOtp']); //registration verification
+Route::post('/api/login', [userController::class, 'login']);
+Route::post('/api/forgotPassword', [userController::class, 'forgotPassword_sendOtp']);
+Route::post('/api/forgotPasswordOtp', [userController::class, 'forgotPassword_verifyOtp'])->middleware([ForgetPassToken_middleware::class]);
+Route::post('/api/resetPassword', [userController::class, 'resetPassword'])->middleware([ForgetPassToken_middleware::class]);
+Route::get('/api/logout', [userController::class, 'UserLogout']);
 
 Route::middleware([verifyToken::class])->group(function () {
     //---- Auth profile routes -----//
@@ -42,9 +42,10 @@ Route::view('/forgotPassword-otpVerify', 'pages.auth.forgetpass-OTP-page');
 Route::view('/resetPassword', 'pages.auth.resetPass-page');
 
 //-------- App Pages ----------//
-Route::view('/', 'pages.app.home-page');
-Route::view('/view-ship', 'pages.app.view-ship-page');
-
+Route::middleware('auth')->group(function () {
+    Route::view('/', 'pages.app.home-page');
+    Route::view('/view-ship', 'pages.app.view-ship-page');
+});
 // -------- Dashboard routes ----------//
 Route::view('/profile', 'pages.dashboard.profile-page');
 Route::view('/dashboard/ship-assign', 'pages.dashboard.assignShip-page');

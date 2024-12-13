@@ -19,7 +19,7 @@
                 <i id="hide-password2" class="fas fa-eye-slash hidden"></i>
             </div>
         </div>
-        <button
+        <button onclick="resetPass()"
             class="w-full h-12 rounded-lg bg-blue-600 text-gray-200 uppercase font-semibold hover:bg-blue-700 transition mb-4">Reset</button>
        
     </div>
@@ -48,4 +48,28 @@
         $('#show-password2').removeClass('hidden');
         $('#hide-password2').addClass('hidden');
     });
+async function resetPass(){
+    const password = $('#password').val();
+    const confirmPass = $('#Confirm-password').val();
+    if(password === confirmPass){
+        showLoader();
+            const res = await axios.post('/api/resetPassword', {
+                new_password: password
+            });
+            hideLoader();
+            if (res.data.status =='success') {
+                successToast(res.data.message);
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 1000);
+            }
+            else {
+                errorToast(res.data.message);
+            }
+    }
+    else{
+        errorToast('Confirm Password not match');
+    }
+}
+
 </script>

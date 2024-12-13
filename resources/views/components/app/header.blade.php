@@ -1,3 +1,10 @@
+<style>
+    .dropdown:focus-within .dropdown-menu {
+        opacity: 1;
+        transform: translate(0) scale(1);
+        visibility: visible;
+    }
+</style>
 <header class="bg-white shadow fixed top-0 z-50 w-full">
     <nav class="relative px-4 py-4 flex justify-between items-center bg-white">
         <a class="relative flex items-center justify-center h-12 w-52" href="#">
@@ -33,9 +40,41 @@
             <li><a class="text-sm text-gray-400 hover:text-gray-500" href="#">Contact</a></li>
         </ul>
         <div class="flex flex-row justify-center items-center space-x-3">
-            <a class="inline-block rounded-full px-3.5 py-2 bg-blue-500 hover:bg-blue-600 text-sm text-white transition duration-200" href="#">S</a>
+            {{-- profile icon --}}
+
+            <div class="flex items-center justify-center">
+                <div class=" relative inline-block text-left dropdown">
+                    <span class="rounded-md shadow-sm"><button
+                            class="inline-block rounded-full px-3.5 py-2 bg-blue-500 hover:bg-blue-600 text-sm text-white transition duration-200"
+                            type="button" aria-haspopup="true" aria-expanded="true"
+                            aria-controls="headlessui-menu-items-117">
+                            k
+                        </button></span>
+                    <div
+                        class="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
+                        <div class="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                            aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+                            <div class="px-4 py-3">
+                                <p class="text-sm leading-5">Signed in as</p>
+                                <p class="text-sm font-medium leading-5 text-gray-900 truncate">tom@example.com</p>
+                            </div>
+                            <div class="py-1">
+                                <a href="javascript:void(0)" tabindex="0"
+                                    class="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left"
+                                    role="menuitem">Dashboard</a>
+                            </div>
+                            <div class="py-1">
+                                <a href="{{ url('/api/logout') }}" tabindex="3"
+                                    class="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left"
+                                    role="menuitem">Log out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <a class="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
-                href="#">Log In</a>
+                href="{{ url('/login') }}">Log In</a>
             <div class="lg:hidden">
                 <button class="navbar-burger flex items-center text-blue-600 p-3">
                     <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +90,8 @@
         <nav
             class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
             <div class="flex items-center mb-8">
-                <a class="relative flex items-center justify-center h-12 w-full" href="#">
+                <a href={{ url('/') }} class="relative flex items-center justify-center h-12 w-full"
+                    href="#">
                     <img src="{{ asset('img/logo/logo.png') }}" alt="logo"
                         class="absolute w-full h-full object-cover">
                 </a>
@@ -89,10 +129,12 @@
             </div>
             <div class="mt-auto">
                 <div class="pt-6">
-                    <a class="block px-4 py-3 mb-3 text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
-                        href="#">Sign in</a>
-                    <a class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl"
-                        href="#">Sign Up</a>
+                    <a href="{{ url('/login') }}"
+                        class="block px-4 py-3 mb-3 text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl">Sign
+                        in</a>
+                    <a href="{{ url('/register') }}"
+                        class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl">Sign
+                        Up</a>
                 </div>
                 <p class="my-4 text-xs text-center text-gray-400">
                     <span>Copyright © 2024</span>
