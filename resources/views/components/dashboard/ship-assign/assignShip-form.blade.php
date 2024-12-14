@@ -4,7 +4,7 @@
 
     {{-- form --}}
     <div class="mx-auto w-full ">
-        <form>
+        <form id="assign-ship-form">
             {{-- Ship Details Form --}}
             <h1 class="text-2xl font-bold text-[#07074D] my-5">Ship Details</h1>
             @include('components.dashboard.ship-assign.shipDetails-form')
@@ -164,14 +164,13 @@
                         showLoader(); //--check config.js file
                         let res = await axios.post("/api/assignShip", data);
                         hideLoader() //--check config.js file
-                        console.log(res.data);
-                        if(res.data.status == true){
-                            successToast("Ship assigned successfully.");
+                        console.log("data:", res);
+                        if (res.data.status == 'success') {
+                            successToast(res.data.message);
                             setTimeout(() => {
-                                window.location.href = "/dashboard/ship-assign";
-                            }, 2000);
-                        }
-                        else{
+                                $('#assign-ship-form').find('input , select').val('');
+                            }, 1000);
+                        } else {
                             errorToast(res.data.message);
                         }
                     }

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('email_verified',10);
             $table->string('manager_verified',10);
             $table->enum('manager_status', ['active', 'ban']);
+            $table->string('admin_verified');
             $table->string('city');
             $table->string('country');
             $table->string('otp',10);

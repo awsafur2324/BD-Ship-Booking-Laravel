@@ -29,9 +29,10 @@
                         <h2 class="font-bold text-gray-800">Ship Assign Confirmation</h2>
                         <div class="mt-2 text-sm text-gray-600 leading-relaxed font-semibold flex flex-col gap-2">
                            <span> 1. One ship one refund policy</span>
+                           <span> 2. One ship one Seat Map</span>
                            <span> 2. Manger have to provide the all necessary Information</span>
                            <span> 3. First Day provide data will set automatically for next 10 days</span>
-                           <span> 4. Manger can change the data in the update ship section if needed</span>
+                           <span> 4. Manger can change the data in the update anything if needed</span>
                         </div>
                     </div>
                 </div>

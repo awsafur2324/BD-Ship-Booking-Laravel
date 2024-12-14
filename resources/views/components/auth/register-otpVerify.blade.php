@@ -26,7 +26,7 @@
                     successToast('OTP verified successfully');
                     setTimeout(() => {
                         window.location.href = '/';
-                    }, 2000);
+                    }, 1000);
                 } else {
                     errorToast(res.data.message);
                 }

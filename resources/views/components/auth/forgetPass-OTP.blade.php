@@ -28,7 +28,7 @@
                 successToast('OTP verified successfully');
                 setTimeout(() => {
                     window.location.href = '/resetPassword';
-                }, 2000);
+                }, 1000);
             }
             else {
                 errorToast(res.data.message);

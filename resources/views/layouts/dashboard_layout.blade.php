@@ -44,7 +44,7 @@
                 {{-- side Nav --}}
                 <div id="side-nav"
                     class="w-full max-w-[250px] shadow-lg h-full overflow-y-auto fixed top-14 -left-[300px] md:left-0 z-40 bg-white transition-all duration-300 ease-in-out">
-                    @include('components.dashboard.dashboard-nav')
+                    @include('components.dashboard.dashboard-sidenav')
                 </div>
                 {{-- main content --}}
                 <div id="main-content" class="relative  w-full md:max-w-[calc(100%-250px)] overflow-y-auto overflow-x-hidden p-2 transition-all duration-300 ease-in-out">

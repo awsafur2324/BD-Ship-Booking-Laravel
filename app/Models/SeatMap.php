@@ -9,11 +9,8 @@ class SeatMap extends Model
 {
     use HasFactory;
     protected $table ='seat_maps';
-    protected $fillable = ['category', 'seat_in_rows', 'seat_in_columns', 'amount_of_seats', 'seat_price', 'seat_tag', 'departurePoints_id', 'shipDetails_id'];
-    public function departurePoint()
-    {
-        return $this->belongsTo(DeparturePoint::class);
-    }
+    protected $fillable = ['category', 'seat_in_rows', 'seat_in_columns', 'amount_of_seats', 'seat_price', 'seat_tag', 'shipDetails_id'];
+  
     public function shipDetail()
     {
         return $this->belongsTo(ShipDetail::class);

@@ -22,6 +22,7 @@ class User extends Model
         'role',
         'manager_verified',
         'manager_status',
+        'admin_verified',
         'city',
         'country',
         'otp',
@@ -34,7 +35,8 @@ class User extends Model
         'gender' => '',
         'address' => '',
         'manager_verified' => '',
-        'manager_status' => 'active',
+        'manager_status' => 'ban',
+        'admin_verified' => '',
         'city' => '',
         'country' => '',
     ];
@@ -44,8 +46,4 @@ class User extends Model
         return $this->hasMany(ShipDetail::class);
     }
 
-    public function hasRole($role)
-    {
-        return $this->role === $role;
-    }
 }

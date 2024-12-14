@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\app\miniShipSearch_Controller;
 use App\Http\Controllers\auth\profileController;
 use App\Http\Controllers\auth\userController;
+use App\Http\Controllers\bookingController;
 use App\Http\Controllers\shipAssignController;
 use App\Http\Middleware\ForgetPassToken_middleware;
 use App\Http\Middleware\verifyToken;
@@ -22,12 +24,14 @@ Route::get('/api/logout', [userController::class, 'UserLogout']);
 
 Route::middleware([verifyToken::class])->group(function () {
     //---- Auth profile routes -----//
-    Route::get('api/profileData', [profileController::class, 'getUserProfile']);
-    Route::post('api/updateProfile', [profileController::class, 'updateProfile']);
-    Route::get('api/deleteProfile', [profileController::class, 'deleteProfile']);
+    Route::get('/api/profileData', [profileController::class, 'getUserProfile']);
+    Route::post('/api/updateProfile', [profileController::class, 'updateProfile']);
+    Route::get('/api/deleteProfile', [profileController::class, 'deleteProfile']);
+    //----- Ship assign routes -----//
+    Route::post('/api/assignShip', [shipAssignController::class, 'assignShip']);
 });
+Route::post('/api/miniSearch', [miniShipSearch_Controller::class, 'miniShipSearch']);
 
-Route::post('api/assignShip', [shipAssignController::class, 'assignShip']);
 
 //----------------------------------------------------------------------------------
 // Web routes
@@ -42,10 +46,14 @@ Route::view('/forgotPassword-otpVerify', 'pages.auth.forgetpass-OTP-page');
 Route::view('/resetPassword', 'pages.auth.resetPass-page');
 
 //-------- App Pages ----------//
-Route::middleware('auth')->group(function () {
-    Route::view('/', 'pages.app.home-page');
-    Route::view('/view-ship', 'pages.app.view-ship-page');
-});
+Route::view('/', 'pages.app.home-page');
+Route::view('/about', 'pages.app.about-page');
+Route::view('/contact', 'pages.app.contact-page');
+Route::view('/find-destination', 'pages.app.destination-page');
+Route::get('/booking/{id}/{departure_id}', [bookingController::class, 'shipView']);//dynamic route for booking page
+Route::view('/booking','pages.app.booking-page');//dynamic route for booking page
+
 // -------- Dashboard routes ----------//
-Route::view('/profile', 'pages.dashboard.profile-page');
+Route::view('/dashboard', 'pages.dashboard.dashboard-home');
+Route::view('/dashboard/profile', 'pages.dashboard.profile-page');
 Route::view('/dashboard/ship-assign', 'pages.dashboard.assignShip-page');

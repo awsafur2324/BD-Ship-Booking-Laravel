@@ -21,10 +21,10 @@
                 </div>
                 <!-- seat count -->
                 <div class="inter text-sm font-medium">
-                    <button onclick="openModal('modelConfirm')"
+                    <div
                         class=" p-3 flex flex-row justify-center gap-1 text-[#1DD100] bg-[#1dd10026] rounded-lg text-sm">
-                        Refund Policy
-                    </button>
+                        Registation No
+                </div>
                 </div>
             </div>
             <!-- route info -->
@@ -44,60 +44,32 @@
                 <p class="text-[#030712] flex flex-col justify-center items-end gap-1"><span>Sylhet</span><span>11-11-2022
                         11:00 PM</span></p>
             </div>
-            @php
-                // this data come from the home page then call the data in here
-                $categories = [
-                    ['id' => 1, 'name' => 'Economy'],
-                    ['id' => 2, 'name' => 'Business'],
-                    ['id' => 3, 'name' => 'First Class'],
-                ];
-                $seats = [
-                    1 => ['A1', 'A2', 'A3'],
-                    2 => ['B1', 'B2', 'B3'],
-                    3 => ['C1', 'C2', 'C3'],
-                ];
-            @endphp
 
             {{-- Tabs --}}
             <div
                 class="flex text-lg items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap bg-gray-100 text-gray-800">
-                @foreach ($categories as $category)
-                    <a href="#tab{{ $category['id'] }}"
-                        class="tab-link flex items-center flex-shrink-0 px-5 py-2 border-b-4 text-gray-600"
-                        data-tab="{{ $category['id'] }}">
-                        {{ $category['name'] }}
-                    </a>
-                @endforeach
+
+                <a href="#tab1" class="tab-link flex items-center flex-shrink-0 px-5 py-2 border-b-4 text-gray-600"
+                    data-tab="1">
+                    Economy
+                </a>
+                <a href="#tab2" class="tab-link flex items-center flex-shrink-0 px-5 py-2 border-b-4 text-gray-600"
+                    data-tab="2">
+                    Business
+                </a>
+                <a href="#tab3" class="tab-link flex items-center flex-shrink-0 px-5 py-2 border-b-4 text-gray-600"
+                    data-tab="3">
+                    Delux
+                </a>
+
             </div>
-
-            {{-- Tab Content
-            <div class="tab-content">
-                @foreach ($categories as $category)
-                    <div id="tab{{ $category['id'] }}" class="tab-pane hidden">
-                        <h3 class="text-lg font-bold text-gray-800">Seats for {{ $category['name'] }}</h3>
-                        <div class="grid grid-cols-2 gap-4 mt-4">
-                            @foreach ($seats[$category['id']] as $seat)
-                                <div class="p-4 bg-white border rounded shadow">
-                                    <p class="text-sm text-gray-600">Seat: {{ $seat }}</p>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endforeach
-            </div> --}}
-
-
-
-
-
 
             <!-- ticket counter -->
             <div class="main flex flex-col md:flex-row justify-between items-start">
-                <div class="tab-content">
-                    @foreach ($categories as $category)
-                        <div id="tab{{ $category['id'] }}"
-                            class="tab-pane hidden right-boder pb-6 pr-0 mb-6 md:pb-0 md:pr-6 w-full md:w-[60%]">
-                            <h1 class="text-lg text-[#030712] font-semibold">Select Your {{ $category['name'] }} Seat</h1>
+                <div class="tab-content w-full md:w-[60%]">
+                        <div id="tab1"
+                            class="tab-pane hidden right-boder pb-6 pr-0 mb-6 md:pb-0 md:pr-6 w-full">
+                            <h1 class="text-lg text-[#030712] font-semibold">Select Your Economy Seat</h1>
                             <h1 class="text-lg text-[#030712] font-semibold">Per Seat Price : BDT 1000</h1>
                             <div class="flex flex-row justify-between items-center my-5">
                                 <div class="text-sm text-[#0307127f] flex flex-row items-center justify-center gap-1">
@@ -109,14 +81,73 @@
                             </div>
                             <!-- seat -->
                             <div class="flex flex-col justify-center items-start">
-                                @foreach ($seats[$category['id']] as $seat)
-                                    <div class="flex flex-wrap justify-between items-start my-2 w-full">
-                                        <div class="seat">{{ $seat }}</div>
-                                    </div>
-                                @endforeach
+
+                                <div class="flex flex-wrap justify-between items-start my-2 w-full">
+                                    <div class="seat">1</div>
+                                </div>
+                                <div class="flex flex-wrap justify-between items-start my-2 w-full">
+                                    <div class="seat">2</div>
+                                </div>
+                                <div class="flex flex-wrap justify-between items-start my-2 w-full">
+                                    <div class="seat">3</div>
+                                </div>
+
                             </div>
                         </div>
-                    @endforeach
+                        <div id="tab2"
+                            class="tab-pane hidden right-boder pb-6 pr-0 mb-6 md:pb-0 md:pr-6 w-full">
+                            <h1 class="text-lg text-[#030712] font-semibold">Select Your Business Seat</h1>
+                            <h1 class="text-lg text-[#030712] font-semibold">Per Seat Price : BDT 1000</h1>
+                            <div class="flex flex-row justify-between items-center my-5">
+                                <div class="text-sm text-[#0307127f] flex flex-row items-center justify-center gap-1">
+                                    <img src="images/seat-gray.png" alt="" />Available
+                                </div>
+                                <div class="text-sm text-[#1DD100] flex flex-row items-center justify-center gap-1">
+                                    <img src="images/seat-green.png" alt="" />Selected
+                                </div>
+                            </div>
+                            <!-- seat -->
+                            <div class="flex flex-col justify-center items-start">
+
+                                <div class="flex flex-wrap justify-between items-start my-2 w-full">
+                                    <div class="seat">1</div>
+                                </div>
+                                <div class="flex flex-wrap justify-between items-start my-2 w-full">
+                                    <div class="seat">2</div>
+                                </div>
+                                <div class="flex flex-wrap justify-between items-start my-2 w-full">
+                                    <div class="seat">3</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div id="tab3"
+                        class="tab-pane hidden right-boder pb-6 pr-0 mb-6 md:pb-0 md:pr-6 w-full">
+                        <h1 class="text-lg text-[#030712] font-semibold">Select Your Delux</h1>
+                        <h1 class="text-lg text-[#030712] font-semibold">Per Seat Price : BDT 1000</h1>
+                        <div class="flex flex-row justify-between items-center my-5">
+                            <div class="text-sm text-[#0307127f] flex flex-row items-center justify-center gap-1">
+                                <img src="images/seat-gray.png" alt="" />Available
+                            </div>
+                            <div class="text-sm text-[#1DD100] flex flex-row items-center justify-center gap-1">
+                                <img src="images/seat-green.png" alt="" />Selected
+                            </div>
+                        </div>
+                        <!-- seat -->
+                        <div class="flex flex-col justify-center items-start">
+
+                            <div class="flex flex-wrap justify-between items-start my-2 w-full">
+                                <div class="seat">1</div>
+                            </div>
+                            <div class="flex flex-wrap justify-between items-start my-2 w-full">
+                                <div class="seat">2</div>
+                            </div>
+                            <div class="flex flex-wrap justify-between items-start my-2 w-full">
+                                <div class="seat">3</div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                 <!-- /part1 -->
                 <div class="part2 w-full md:w-[40%] pl-0 md:pl-6">
@@ -203,14 +234,14 @@
                             type="email" placeholder="Enter your email id" />
                     </form>
                     <button disabled id="next"
-                        class="btn w-full text-white bg-[#1DD100] text-lg font-extrabold rounded-xl">
+                        class="p-3 cursor-pointer w-full text-white bg-[#1DD100] hover:bg-[#a7d8a0] text-lg font-extrabold rounded-xl">
                         Next
                     </button>
                     <div class="flex flex-row justify-center gap-2 md:gap-5 mt-3">
                         <p class="underline text-xs text-[#03071299]">
                             Terms and Conditions
                         </p>
-                        <p class="underline text-xs text-[#03071299]">
+                        <p onclick="openModal('modelConfirm')" class="underline text-xs text-[#03071299]">
                             Cancellation Policy
                         </p>
                     </div>

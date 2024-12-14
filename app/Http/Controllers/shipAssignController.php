@@ -7,6 +7,7 @@ use App\Models\DeparturePoint;
 use App\Models\RefundPolicy;
 use App\Models\SeatMap;
 use App\Models\ShipDetail;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,23 +16,23 @@ class shipAssignController extends Controller
     //
     public function assignShip(Request $request)
     {
+
         DB::beginTransaction();
 
         try {
             $postData = $request->all();
-            return $postData;
 
             $user_id = $request->header('id');
             // Save Ship Details
             $shipDetails = $postData['shipDetails'][0] ?? null;
             if (!$shipDetails) {
-                return response()->json(['status' => false ,'message' => 'Ship details are required'], 400);
+                return response()->json(['status' => false, 'message' => 'Ship details are required']);
             }
 
             // Check if the ship already exists
             $shipExists = ShipDetail::where('ship_register_no', $shipDetails['ship_register_no'])->first();
             if ($shipExists) {
-                return response()->json([ 'status' => false ,'message' => 'Ship already exists'], 400);
+                return response()->json(['status' => false, 'message' => 'Ship already exists']);
             }
 
             $shipDetail = ShipDetail::create([
@@ -53,33 +54,50 @@ class shipAssignController extends Controller
                 ]);
             }
 
+
             // Save Ship Route (Departure and Arrival Points)
             $shipRoute = $postData['shipRoute'] ?? [];
+            $departureIDs = [];
             foreach ($shipRoute as $route) {
-                if (isset($route['departure_from'])) {
-                   $DeparturePoint = DeparturePoint::create([
-                        'shipDetails_id' => $shipDetail->id,
-                        'departure_point' => $route['departure_from'],
-                        'departure_date' => $route['departure_date'],
-                        'departure_time' => $route['departure_time']
-                    ]);
+                // Only process if departure and arrival data exist
+                if (isset($route['departure_from'], $route['departure_date'], $route['departure_time'])) {
+                    for ($i = 0; $i < 10; $i++) { // Loop for the next 10 days
+                        // Increment departure date
+                        $departureDate = new DateTime($route['departure_date']);
+                        $departureDate->modify("+$i day");
+
+                        // Save Departure Point
+                        $DeparturePoint = DeparturePoint::create([
+                            'shipDetails_id' => $shipDetail->id,
+                            'departure_point' => $route['departure_from'],
+                            'departure_date' => $departureDate->format('Y-m-d'),
+                            'departure_time' => $route['departure_time']
+                        ]);
+                        $departureIDs[] = $DeparturePoint->id;
+                    }
                 }
-                if (isset($route['arrival_at'])) {
-                    ArrivalPoint::create([
-                        'shipDetails_id' => $shipDetail->id,
-                        'departurePoints_id' => $DeparturePoint->id,
-                        'arrival_point' => $route['arrival_at'],
-                        'arrival_date' => $route['arrival_date'],
-                        'arrival_time' => $route['arrival_time']
-                    ]);
+
+                // Save Arrival Point if it exists
+                if (isset($route['arrival_at'], $route['arrival_time']) && $route['arrival_date']) {
+                    for ($i = 0; $i < 10; $i++) {
+                        // Increment arrival date if present
+                        $arrivalDate = new DateTime($route['arrival_date']);
+                        $arrivalDate->modify("+$i day"); //
+
+                        ArrivalPoint::create([
+                            'shipDetails_id' => $shipDetail->id,
+                            'departurePoints_id' => $departureIDs[$i],
+                            'arrival_point' => $route['arrival_at'],
+                            'arrival_date' => $arrivalDate->format('Y-m-d'),
+                            'arrival_time' => $route['arrival_time']
+                        ]);
+                    }
                 }
             }
-
             // Save Seat Map
             $seatMapData = $postData['seatMap'] ?? [];
             foreach ($seatMapData as $seat) {
                 SeatMap::create([
-                    'departurePoints_id' => $DeparturePoint->id,
                     'shipDetails_id' => $shipDetail->id,
                     'category' => $seat['seat_category'],
                     'seat_in_rows' => $seat['seat_row'],
@@ -90,10 +108,10 @@ class shipAssignController extends Controller
             }
             DB::commit();
 
-            return response()->json(['status' => true ,'message' => 'Ship data successfully saved!'], 201);
+            return response()->json(['status' => 'success', 'message' => 'Ship data successfully saved!'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()]);
         }
     }
 }

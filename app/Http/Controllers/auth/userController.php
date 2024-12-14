@@ -78,9 +78,15 @@ class userController extends Controller
                 $token = JWT_token::CreateToken($user->email, $user->id);
 
                 // set user role into session so that use it in anywhere.
-                $request->session()->put('user_role', $user->role);
                 $request->session()->put('user_name', $user->name);
 
+                if ($user->role && $user->manager_verified === "true") {
+                    $request->session()->put('user_role', 'manager');
+                } elseif ($user->role && $user->admin_verified === "true") {
+                    $request->session()->put('user_role', 'admin');
+                } else {
+                    $request->session()->put('user_role', 'user');
+                }
                 // Redirect to current page
                 return response()->json([
                     'status' => 'success',
@@ -122,8 +128,16 @@ class userController extends Controller
 
             $token = JWT_token::CreateToken($user->email, $user->id);
 
-            $request->session()->put('user_role', $user->role);
+            // set user role into session so that use it in anywhere.
             $request->session()->put('user_name', $user->name);
+
+            if ($user->role && $user->manager_verified === "true" && $user->manager_status === "active") {
+                $request->session()->put('user_role', 'manager');
+            } elseif ($user->role && $user->admin_verified === "true") {
+                $request->session()->put('user_role', 'admin');
+            } else {
+                $request->session()->put('user_role', 'user');
+            }
 
             return response()->json(['status' => 'success', 'message' => 'Login successful'], 200)
                 ->cookie('token', $token, time() + 60 * 60 * 24 * 30);

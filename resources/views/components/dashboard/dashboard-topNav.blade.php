@@ -29,19 +29,17 @@
                         <div class="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
                             aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
                             <div class="px-4 py-3">
-                                <p class="text-sm leading-5">Signed in as</p>
-                                <p class="text-sm font-medium leading-5 text-gray-900 truncate">tom@example.com</p>
+                                <p class="text-sm leading-5">Signed in as  {{ session('user_role') }}</p>
+                            
                             </div>
                             <div class="py-1">
-                                <a href="javascript:void(0)" tabindex="0"
+                                <a href="{{ url('/dashboard/profile') }}" tabindex="0"
                                     class="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left"
-                                    role="menuitem">Account settings</a>
-                                <a href="javascript:void(0)" tabindex="1"
-                                    class="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left"
-                                    role="menuitem">Support</a>
+                                    role="menuitem">Profile</a>
+
                             </div>
                             <div class="py-1">
-                                <a href="javascript:void(0)" tabindex="3"
+                                <a href="{{ url('/api/logout') }}" tabindex="3"
                                     class="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left"
                                     role="menuitem">Sign out</a>
                             </div>
@@ -51,7 +49,7 @@
             </div>
         </div>
         {{-- Burger menu icon --}}
-        <div  class="h-14 flex items-center justify-center md:hidden">
+        <div class="h-14 flex items-center justify-center md:hidden">
             <i id="burger" class="fa fa-bars text-green-400 text-2xl cursor-pointer"></i>
             <i id="cross" class="fa fa-times text-green-400 text-2xl cursor-pointer hidden"></i>
         </div>

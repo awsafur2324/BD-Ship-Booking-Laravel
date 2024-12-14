@@ -51,7 +51,7 @@
                 setTimeout(function() {
                     // After log in redirect to current page where it's redirect to log in page
                     window.location.href = "/";
-                }, 2000)
+                }, 1000)
 
             } else {
                 errorToast(res.data['message']); //--check config.js file

@@ -13,7 +13,9 @@
 
         <ul
             class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
-            <li><a class="text-sm text-blue-600 font-bold " href="#">Home</a></li>
+            <li><a href="/"
+                    class="text-sm font-bold {{ request()->is('/') ? 'text-blue-600' : 'text-gray-400 hover:text-gray-500' }}">Home</a>
+            </li>
             <li class="text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
                     class="w-4 h-4 current-fill" viewBox="0 0 24 24">
@@ -21,7 +23,9 @@
                         d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                 </svg>
             </li>
-            <li><a class="text-sm text-gray-400 hover:text-gray-500" href="#">Destination</a></li>
+            <li><a href="/find-destination"
+                    class="text-sm font-bold {{ request()->is('find-destination') ? 'text-blue-600' : 'text-gray-400 hover:text-gray-500' }}">Destination</a>
+            </li>
             <li class="text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
                     class="w-4 h-4 current-fill" viewBox="0 0 24 24">
@@ -29,7 +33,9 @@
                         d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                 </svg>
             </li>
-            <li><a class="text-sm text-gray-400 hover:text-gray-500" href="#">About Us</a></li>
+            <li><a href="/about"
+                    class="text-sm font-bold {{ request()->is('about') ? 'text-blue-600' : 'text-gray-400 hover:text-gray-500' }}">About
+                    Us</a></li>
             <li class="text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
                     class="w-4 h-4 current-fill" viewBox="0 0 24 24">
@@ -37,52 +43,52 @@
                         d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                 </svg>
             </li>
-            <li><a class="text-sm text-gray-400 hover:text-gray-500" href="#">Contact</a></li>
+            <li><a href="/contact"
+                    class="text-sm font-bold {{ request()->is('contact') ? 'text-blue-600' : 'text-gray-400 hover:text-gray-500' }}"
+                    href="#">Contact</a></li>
         </ul>
         <div class="flex flex-row justify-center items-center space-x-3">
-            {{-- profile icon --}}
-
-            <div class="flex items-center justify-center">
-                <div class=" relative inline-block text-left dropdown">
-                    <span class="rounded-md shadow-sm"><button
-                            class="inline-block rounded-full px-3.5 py-2 bg-blue-500 hover:bg-blue-600 text-sm text-white transition duration-200"
-                            type="button" aria-haspopup="true" aria-expanded="true"
-                            aria-controls="headlessui-menu-items-117">
-                            k
-                        </button></span>
-                    <div
-                        class="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
-                        <div class="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
-                            aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                            <div class="px-4 py-3">
-                                <p class="text-sm leading-5">Signed in as</p>
-                                <p class="text-sm font-medium leading-5 text-gray-900 truncate">tom@example.com</p>
-                            </div>
-                            <div class="py-1">
-                                <a href="javascript:void(0)" tabindex="0"
-                                    class="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left"
-                                    role="menuitem">Dashboard</a>
-                            </div>
-                            <div class="py-1">
-                                <a href="{{ url('/api/logout') }}" tabindex="3"
-                                    class="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left"
-                                    role="menuitem">Log out</a>
+            @if (session('user_name'))
+                {{-- profile icon --}}
+                <div class="flex items-center justify-center">
+                    <div class=" relative inline-block text-left dropdown">
+                        <span class="rounded-md shadow-sm"><button
+                                class="inline-block rounded-full px-3.5 py-2 bg-blue-500 hover:bg-blue-600 text-sm text-white transition duration-200"
+                                type="button" aria-haspopup="true" aria-expanded="true"
+                                aria-controls="headlessui-menu-items-117">
+                                {{ session('user_name') }}
+                            </button></span>
+                        <div
+                            class="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
+                            <div class="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                                aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117"
+                                role="menu">
+                                <div class="py-1">
+                                    <a href="{{ url('/dashboard') }}" tabindex="0"
+                                        class="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left"
+                                        role="menuitem">Dashboard</a>
+                                </div>
+                                <div class="py-1">
+                                    <a href="{{ url('/api/logout') }}" tabindex="3"
+                                        class="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left"
+                                        role="menuitem">Log out</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <a class="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
-                href="{{ url('/login') }}">Log In</a>
-            <div class="lg:hidden">
-                <button class="navbar-burger flex items-center text-blue-600 p-3">
-                    <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <title>Mobile menu</title>
-                        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-                    </svg>
-                </button>
-            </div>
+            @else
+                <a class="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
+                    href="{{ url('/login') }}">Log In</a>
+                <div class="lg:hidden">
+                    <button class="navbar-burger flex items-center text-blue-600 p-3">
+                        <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <title>Mobile menu</title>
+                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+                        </svg>
+                    </button>
+                </div>
+            @endif
         </div>
     </nav>
     <div class="navbar-menu relative z-50 hidden">

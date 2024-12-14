@@ -25,7 +25,7 @@
                 setTimeout(function() {
                     // After log in redirect to current page where it's redirect to log in page
                     window.location.href = "/forgotPassword-otpVerify";
-                }, 2000)
+                }, 1000)
             } else {
                 errorToast(response.data.message);
             }

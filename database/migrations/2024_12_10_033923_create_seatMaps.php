@@ -20,10 +20,8 @@ return new class extends Migration
             $table->string('seat_tag', 50);
 
             // Foreign keys
-            $table->unsignedBigInteger('departurePoints_id');
             $table->unsignedBigInteger('shipDetails_id');
 
-            $table->foreign('departurePoints_id')->references('id')->on('departure_points')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreign('shipDetails_id')->references('id')->on('ship_details')->cascadeOnUpdate()->restrictOnDelete();
 
             // Timestamps
