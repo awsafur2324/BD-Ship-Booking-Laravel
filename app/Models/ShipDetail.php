@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ShipDetail extends Model
 {
     use HasFactory;
-    protected $table = 'ship_details'; 
+    protected $table = 'ship_details';
     protected $fillable = [
         'ship_name',
         'couch_no',
@@ -37,5 +37,10 @@ class ShipDetail extends Model
     public function seatMap()
     {
         return $this->hasMany(SeatMap::class);
+    }
+    // Define relationships (if needed)
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }

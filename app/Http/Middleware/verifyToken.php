@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Helper\JWT_token;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
 class verifyToken
@@ -20,8 +21,8 @@ class verifyToken
         $token = $request->cookie('token');
         $result = JWT_token::VerifyToken($token);
         if ($result == "unauthorized") {
-            //TODO redirect to login page
-            return redirect('/');
+            Session::put('url.intended', url()->current());
+            return redirect('/login');
         } else {
             $request->headers->set('email', $result->userEmail);
             $request->headers->set('id', $result->userID);

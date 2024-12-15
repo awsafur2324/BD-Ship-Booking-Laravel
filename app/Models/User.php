@@ -44,6 +44,10 @@ class User extends Model
     public function shipDetails()
     {
         return $this->hasMany(ShipDetail::class);
+    }    // Define relationships (if needed)
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 
 }

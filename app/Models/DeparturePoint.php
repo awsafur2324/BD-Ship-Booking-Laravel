@@ -19,4 +19,9 @@ class DeparturePoint extends Model
     {
         return $this->belongsTo(ShipDetail::class);
     }
+    // Define relationships (if needed)
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

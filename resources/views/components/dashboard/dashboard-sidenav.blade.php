@@ -10,6 +10,7 @@
         <div class="space-y-2">
             <h2 class="text-sm font-semibold tracking-widest uppercase dark:text-gray-600">My Bookings</h2>
             <div class="flex flex-col space-y-1">
+                <a href="{{ url('/dashboard/my-Bookings') }}">My Bookings</a>
                 <a href="#">My Tickets</a>
                 <a href="#">My Refunds</a>
             </div>

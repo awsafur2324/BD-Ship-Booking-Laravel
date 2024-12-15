@@ -50,7 +50,7 @@
                 successToast(res.data['message']);
                 setTimeout(function() {
                     // After log in redirect to current page where it's redirect to log in page
-                    window.location.href = "/";
+                    window.location.href = res.data['url'];
                 }, 1000)
 
             } else {

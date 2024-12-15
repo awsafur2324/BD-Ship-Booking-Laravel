@@ -12,6 +12,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/toastify.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/swiper-bundle.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet" />
 
     {{-- script --}}
     <script src="{{ asset('js/tailwind.min.v3.js') }}"></script>
@@ -19,6 +20,7 @@
     <script src="{{ asset('js/axios.min.js') }}"></script>
     <script src="{{ asset('js/config.js') }}"></script>
     <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/swiper-bundle.min.js') }}"></script>
 </head>
 

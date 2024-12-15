@@ -138,8 +138,13 @@ class userController extends Controller
             } else {
                 $request->session()->put('user_role', 'user');
             }
+            if (Session::has('url.intended')) {
+                $url = Session::get('url.intended');
+            }else{
+                $url = '/';
+            }
 
-            return response()->json(['status' => 'success', 'message' => 'Login successful'], 200)
+            return response()->json(['status' => 'success', 'message' => 'Login successful' , 'url' => $url], 200)
                 ->cookie('token', $token, time() + 60 * 60 * 24 * 30);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => 'Login failed']);
@@ -214,6 +219,7 @@ class userController extends Controller
     {
         Session::forget('user_name');
         Session::forget('user_role');
+        Session::forget('url.intended');
         return redirect('/')->cookie('token', '', -1);
     }
 }

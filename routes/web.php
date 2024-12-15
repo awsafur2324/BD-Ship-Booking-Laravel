@@ -29,8 +29,10 @@ Route::middleware([verifyToken::class])->group(function () {
     Route::get('/api/deleteProfile', [profileController::class, 'deleteProfile']);
     //----- Ship assign routes -----//
     Route::post('/api/assignShip', [shipAssignController::class, 'assignShip']);
+    Route::post('/api/booking/create', [bookingController::class, 'setBookingData']);
+    Route::get('/api/booking/list', [bookingController::class, 'viewBookings']);
+    
 });
-Route::post('/api/miniSearch', [miniShipSearch_Controller::class, 'miniShipSearch']);
 
 
 //----------------------------------------------------------------------------------
@@ -50,10 +52,11 @@ Route::view('/', 'pages.app.home-page');
 Route::view('/about', 'pages.app.about-page');
 Route::view('/contact', 'pages.app.contact-page');
 Route::view('/find-destination', 'pages.app.destination-page');
-Route::get('/booking/{id}/{departure_id}', [bookingController::class, 'shipView']);//dynamic route for booking page
-Route::view('/booking','pages.app.booking-page');//dynamic route for booking page
+Route::get('/booking/{id}/{departure_id}', [bookingController::class, 'shipView'])->middleware([verifyToken::class]); //dynamic route for booking page
+
 
 // -------- Dashboard routes ----------//
-Route::view('/dashboard', 'pages.dashboard.dashboard-home');
-Route::view('/dashboard/profile', 'pages.dashboard.profile-page');
-Route::view('/dashboard/ship-assign', 'pages.dashboard.assignShip-page');
+Route::view('/dashboard', 'pages.dashboard.dashboard-home')->middleware([verifyToken::class]);
+Route::view('/dashboard/profile', 'pages.dashboard.profile-page')->middleware([verifyToken::class]);
+Route::view('/dashboard/ship-assign', 'pages.dashboard.assignShip-page')->middleware([verifyToken::class]);
+Route::view('/dashboard/my-Bookings', 'pages.dashboard.my-booking-page')->middleware([verifyToken::class]);
