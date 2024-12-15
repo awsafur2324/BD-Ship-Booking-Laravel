@@ -34,6 +34,7 @@ Route::middleware([verifyToken::class])->group(function () {
     
 });
 
+Route::post('/api/miniSearch', [miniShipSearch_Controller::class, 'miniShipSearch']);
 
 //----------------------------------------------------------------------------------
 // Web routes
