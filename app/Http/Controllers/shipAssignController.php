@@ -84,28 +84,39 @@ class shipAssignController extends Controller
                         $arrivalDate = new DateTime($route['arrival_date']);
                         $arrivalDate->modify("+$i day"); //
 
-                        ArrivalPoint::create([
+                        $ArrivedPoint =   ArrivalPoint::create([
                             'shipDetails_id' => $shipDetail->id,
                             'departurePoints_id' => $departureIDs[$i],
                             'arrival_point' => $route['arrival_at'],
                             'arrival_date' => $arrivalDate->format('Y-m-d'),
                             'arrival_time' => $route['arrival_time']
                         ]);
+
+                        // Save Seat price if it exists
+                        // Save Seat Map
+                        $seatMapData = $postData['seatMap'] ?? [];
+                        foreach ($seatMapData as $seat) {
+                            $seatPrice = $postData['seatPrices'] ?? [];
+                            foreach ($seatPrice as $price) {
+                                if ($seat['seat_category'] == $price['seat_category'] && $route['arrival_at'] == $price['arrival_at']) {
+                                    $available_seats = $seat['seat_row'] * $seat['seat_column'];
+                                    SeatMap::create([
+                                        'shipDetails_id' => $shipDetail->id,
+                                        'arrivalPoints_id' => $ArrivedPoint->id,
+                                        'category' => $seat['seat_category'],
+                                        'seat_in_rows' => $seat['seat_row'],
+                                        'seat_in_columns' => $seat['seat_column'],
+                                        'seat_tag' => $seat['seat_tag'],
+                                        'available_seats' => $available_seats,
+                                        'seat_price' => $price['seat_price']
+                                    ]);
+                                }
+                            }
+                        }
                     }
                 }
             }
-            // Save Seat Map
-            $seatMapData = $postData['seatMap'] ?? [];
-            foreach ($seatMapData as $seat) {
-                SeatMap::create([
-                    'shipDetails_id' => $shipDetail->id,
-                    'category' => $seat['seat_category'],
-                    'seat_in_rows' => $seat['seat_row'],
-                    'seat_in_columns' => $seat['seat_column'],
-                    'seat_price' => $seat['seat_price'],
-                    'seat_tag' => $seat['seat_tag'],
-                ]);
-            }
+
             DB::commit();
 
             return response()->json(['status' => 'success', 'message' => 'Ship data successfully saved!'], 200);

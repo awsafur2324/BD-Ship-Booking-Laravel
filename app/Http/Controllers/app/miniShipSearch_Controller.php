@@ -10,15 +10,20 @@ class miniShipSearch_Controller extends Controller
 {
     public function miniShipSearch(Request $request)
     {
+        $departure = $request->input('departure'); // Replace with dynamic value
+        $arrival = $request->input('arrival'); // Replace with dynamic value
+        $date = $request->input('date'); // Replace with dynamic value
+        $available_seats = $request->input('guest_no'); // Replace with dynamic value
         // Fetch and join all necessary data
         $shipDetails = DB::table('ship_details')
             ->join('departure_points', 'ship_details.id', '=', 'departure_points.shipDetails_id')
             ->join('arrival_points', 'departure_points.id', '=', 'arrival_points.departurePoints_id')
-            ->join('seat_maps', 'ship_details.id', '=', 'seat_maps.shipDetails_id')
+            ->join('seat_maps', 'arrival_points.id', '=', 'seat_maps.arrivalPoints_id')
             ->where([
-                ['departure_points.departure_point', '=', $request->input('departure')],
-                ['departure_points.departure_date', '=', $request->input('date')],
-                ['arrival_points.arrival_point', '=', $request->input('arrival')],
+                ['departure_points.departure_point', '=', $departure],
+                ['departure_points.departure_date', '=', $date],
+                ['arrival_points.arrival_point', '=', $arrival],
+                ['seat_maps.available_seats', '>=', $available_seats],
             ])
             ->select(
                 'ship_details.id',
@@ -30,7 +35,8 @@ class miniShipSearch_Controller extends Controller
                 'departure_points.departure_date',
                 'arrival_points.arrival_point',
                 'seat_maps.category',
-                'seat_maps.seat_price'
+                'seat_maps.seat_price',
+                'seat_maps.available_seats'
             )
             ->get()
             ->groupBy('ship_name') // Group by ship name to handle nested data
@@ -51,8 +57,9 @@ class miniShipSearch_Controller extends Controller
                         return [
                             'category' => $seat->category,
                             'seat_price' => $seat->seat_price,
+                            'available_seats' => $seat->available_seats,
                         ];
-                    })->values()
+                    })->values()->unique('category')->toArray(),
                 ];
             })
             ->values();

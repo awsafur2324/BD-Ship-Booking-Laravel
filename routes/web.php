@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\app\destination_controller;
 use App\Http\Controllers\app\miniShipSearch_Controller;
 use App\Http\Controllers\auth\profileController;
 use App\Http\Controllers\auth\userController;
@@ -35,6 +36,7 @@ Route::middleware([verifyToken::class])->group(function () {
 });
 
 Route::post('/api/miniSearch', [miniShipSearch_Controller::class, 'miniShipSearch']);
+Route::post('/api/filter', [destination_controller::class, 'index']);
 
 //----------------------------------------------------------------------------------
 // Web routes
@@ -52,7 +54,7 @@ Route::view('/resetPassword', 'pages.auth.resetPass-page');
 Route::view('/', 'pages.app.home-page');
 Route::view('/about', 'pages.app.about-page');
 Route::view('/contact', 'pages.app.contact-page');
-Route::view('/find-destination', 'pages.app.destination-page');
+Route::view('/find-destination', 'pages.app.find-destination-page');
 Route::get('/booking/{id}/{departure_id}', [bookingController::class, 'shipView'])->middleware([verifyToken::class]); //dynamic route for booking page
 
 

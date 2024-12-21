@@ -7,9 +7,9 @@
                 </label>
                 <select name="refund_category" id="refund_category" required
                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#000000] outline-none focus:border-[#6A64F1] focus:shadow-md">
-                    <option value="full">Full Refund</option>
-                    <option value="half">Half Refund</option>
-                    <option value="no">No Refund</option>
+                    <option value="Full">Full Refund</option>
+                    <option value="Half">Half Refund</option>
+                    <option value="No">No Refund</option>
                 </select>
             </div>
         </div>

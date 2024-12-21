@@ -23,7 +23,8 @@
                 <label for="ship_register_no" class="mb-3 block text-base font-semibold text-[#07074D]">
                     Ship Register No (IMO)
                 </label>
-                <input type="text" name="ship_register_no" id="ship_register_no" placeholder="E.g. Dha-1234567" required
+                <input type="text" name="ship_register_no" id="ship_register_no" placeholder="E.g. Dha-1234567"
+                    required
                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#000000] outline-none focus:border-[#6A64F1] focus:shadow-md" />
             </div>
         </div>
@@ -41,10 +42,10 @@
                 <label for="manager_number" class="mb-3 block text-base font-semibold text-[#07074D]">
                     Ship Manager Number
                 </label>
-                <input type="tel" name="manager_number" id="manager_number" placeholder="E.g. 01644453394"
-                    required
+                <input type="tel" name="manager_number" id="manager_number" placeholder="E.g. 01644453394" required
                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#000000] outline-none focus:border-[#6A64F1] focus:shadow-md" />
             </div>
         </div>
     </div>
 </div>
+

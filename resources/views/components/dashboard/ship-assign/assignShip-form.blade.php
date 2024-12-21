@@ -29,11 +29,11 @@
                 </div>
                 {{-- Sear Map --}}
                 <div>
-                    <h1 class="text-xl font-bold text-[#07074D] my-5">
-                        <i class="fas fa-chair"></i>
-                        Seat Map
-                    </h1>
                     @include('components.dashboard.ship-assign.shipSeat-map')
+                </div>
+                {{-- Sear Price --}}
+                <div>
+                    @include('components.dashboard.ship-assign.shipSeat-price')
                 </div>
                 <hr class="border-dashed border-[#000000] my-5">
             </div>
@@ -41,7 +41,7 @@
             <div class="w-full p-5 bg-gray-100 flex justify-center items-center text-[#07074D] gap-5">
                 {{-- Submit button --}}
                 <button type="submit" id="btn_submit"
-                    class="rounded text-lg px-20 py-3 overflow-hidden group bg-green-500 relative hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300">
+                    class="hidden rounded text-lg px-20 py-3 overflow-hidden group bg-green-500 relative hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300">
                     <span
                         class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-52 ease"></span>
                     <span class="relative">Assign Ship</span>
@@ -53,6 +53,8 @@
 
 <script>
     $('document').ready(function() {
+        //-----------------------------------show set map form 
+
         async function assignShipData() { // Wrap in an async function
             try {
                 const shipDetails = [{
@@ -65,7 +67,7 @@
                 const refundPolicyData = await getRefundPolicyData();
 
                 // ----------------------------------------Ship Route Data
-                const shipRoute = [];
+                let shipRoute = [];
                 shipRoute.push({
                     departure_from: $('#departure_from').val(),
                     departure_date: $('#departure_date').val(),
@@ -85,59 +87,57 @@
                     });
                 });
 
-                function hasDuplicateRoute(array) {
-                    const arrival = new Set();
-                    for (const item of array) {
-                        if (arrival.has(item.arrival_at) || arrival.has(item.arrival_time) || shipRoute[0]
-                            .departure_from === item.arrival_at || shipRoute[0].departure_time === item
-                            .arrival_time) {
-                            return true; // Duplicate found
-                        }
-                        arrival.add(item.arrival_at);
-                    }
-                    return false; // No duplicates
-                }
-
                 // ------------------------------------seat map data
-                const seatMap = [];
+                let seatMap = [];
                 // Iterate through each refund-policy section
                 $('.seat-map-class').each(function() {
                     const seat_category = $(this).find('input[name="seat_category"]').val();
                     const seat_row = $(this).find('input[name="seat_row"]').val();
                     const seat_column = $(this).find('input[name="seat_column"]').val();
                     const seat_tag = $(this).find('input[name="seat_tag"]').val();
-                    const seat_price = $(this).find('input[name="seat_price"]').val();
 
                     seatMap.push({
                         seat_category,
                         seat_row,
                         seat_column,
                         seat_tag,
-                        seat_price
+
                     });
                 });
 
-                function hasDuplicateSeat(array) {
-                    const seats = new Set();
-                    for (const item of array) {
-                        if (seats.has(item.seat_category)) {
-                            return true; // Duplicate found
-                        }
-                        seats.add(item.seat_category);
-                    }
-                    return false; // No duplicates
-                }
+                //-------------------------------seat price data
+                const seatPrices = []; // Initialize array to store data
+                // Loop through each route and collect data
+                $('#seat-price-container > div > div').each(function() {
+                    const routeElement = $(this);
+
+                    // Collect seat prices for this route
+                    routeElement.find('input[name^="seat_price"]').each(function() {
+                        const input = $(this);
+                        const seat_category = input.attr('name').split('_')
+                            .pop(); // Extract seat category from name
+                        const nameParts = input.attr('name').split('_');
+                        const arrival_at = nameParts[nameParts.length - 2];
+
+                        const seat_price = input.val(); // Get seat price value
+
+                        // Add to array
+                        seatPrices.push({
+                            arrival_at : arrival_at,
+                            seat_category: seat_category,
+                            seat_price: seat_price
+                        });
+                    });
+                });
+
 
                 // Check for empty fields
                 const requiredFields = [
-                    ...Object.values(shipDetails[0]),
-                    $('#departure_from').val(),
-                    $('#departure_date').val(),
-                    $('#departure_time').val(),
-                    ...shipRoute.map(route => Object.values(route)),
-                    ...seatMap.map(seat => Object.values(seat))
-                ];
-
+                    ...Object.values(shipDetails[0])
+                ]
+                const requiredPrice = [
+                    ...seatPrices.map(price => Object.values(price))
+                ].flat();
                 const hasEmptyFields = requiredFields.some(field => !field);
 
                 if (hasEmptyFields) {
@@ -145,36 +145,28 @@
                     return; // Stop execution if there are empty fields
                 }
 
-                // Check for duplicates
-                if (hasDuplicateRoute(shipRoute)) {
-                    errorToast("Duplicate value found. Please check the arrival points again.");
-                    shipRoute = [];
+                // Send data to server
+                const data = {
+                    shipDetails,
+                    refundPolicyData,
+                    shipRoute,
+                    seatMap,
+                    seatPrices,
+                };
+                // console.log("data:", data);
+                showLoader(); //--check config.js file
+                let res = await axios.post("/api/assignShip", data);
+                hideLoader() //--check config.js file
+                // console.log("data:", res);
+                if (res.data.status == 'success') {
+                    successToast(res.data.message);
+                    setTimeout(() => {
+                        $('#assign-ship-form').find('input , select').val('');
+                    }, 1000);
                 } else {
-                    if (hasDuplicateSeat(seatMap)) {
-                        errorToast("Duplicate value found. Please check the seat map again.");
-                        seatMap = [];
-                    } else {
-                        // Send data to server
-                        const data = {
-                            shipDetails,
-                            refundPolicyData,
-                            shipRoute,
-                            seatMap
-                        };
-                        showLoader(); //--check config.js file
-                        let res = await axios.post("/api/assignShip", data);
-                        hideLoader() //--check config.js file
-                        console.log("data:", res);
-                        if (res.data.status == 'success') {
-                            successToast(res.data.message);
-                            setTimeout(() => {
-                                $('#assign-ship-form').find('input , select').val('');
-                            }, 1000);
-                        } else {
-                            errorToast(res.data.message);
-                        }
-                    }
+                    errorToast(res.data.message);
                 }
+
 
             } catch (error) {
                 console.error(error);

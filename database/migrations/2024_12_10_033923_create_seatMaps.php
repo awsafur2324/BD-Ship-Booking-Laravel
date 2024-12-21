@@ -16,13 +16,25 @@ return new class extends Migration
             $table->string('category', 50);
             $table->integer('seat_in_rows'); // Regular integer field
             $table->integer('seat_in_columns'); // Regular integer field
-            $table->integer('seat_price'); // Regular integer field
             $table->string('seat_tag', 50);
+            $table->integer('available_seats'); // Fixed field definition
+            $table->integer('seat_price'); // Fixed field definition
 
             // Foreign keys
             $table->unsignedBigInteger('shipDetails_id');
+            $table->unsignedBigInteger('arrivalPoints_id');
 
-            $table->foreign('shipDetails_id')->references('id')->on('ship_details')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreign('shipDetails_id')
+                ->references('id')
+                ->on('ship_details')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->foreign('arrivalPoints_id')
+                ->references('id')
+                ->on('arrival_points')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
 
             // Timestamps
             $table->timestamps();
@@ -34,6 +46,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('seatMaps');
+        Schema::dropIfExists('seat_maps');
     }
 };
