@@ -1,0 +1,9 @@
+@extends('layouts.app_layout')
+@section('content')
+@include('components.app.home.home-slider')
+@include('components.app.home.home-booking')
+@include('components.app.home.process')
+@include('components.app.home.count-up')
+@include('components.app.home.review')
+@include('components.app.home.faq')
+@endsection
