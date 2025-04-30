@@ -71,7 +71,7 @@
                         class="{{ request()->is('dashboard/add-discount') ? 'text-blue-800 font-semibold' : '' }}">Add
                         Discount</a>
                     <a href="{{ url('/dashboard/discount-manager') }}"
-                        class="{{ request()->is('dashboard/discount-manager') ? 'text-blue-800 font-semibold' : '' }}">Manager
+                        class="{{ request()->is('dashboard/discount-manager') ? 'text-blue-800 font-semibold' : '' }}">Manage
                         Discount</a>
                     <a href="{{ url('/dashboard/verify-manager') }}"
                         class="{{ request()->is('dashboard/verify-manager') ? 'text-blue-800 font-semibold' : '' }}">Manager
